@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Exam Performance Predictor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f0f9ff;
+      --card-bg: #ffffff;
+      --text: #2c3e50;
+      --accent: #3498db;
+      --input-bg: #ffffff;
+      --label: #34495e;
+      --result: #27ae60;
+    }
+
+    body.dark {
+      --bg: #121212;
+      --card-bg: #1e1e1e;
+      --text: #ffffff;
+      --accent: #3498db;
+      --input-bg: #2c2c2c;
+      --label: #aaaaaa;
+      --result: #2ecc71;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      transition: all 0.4s ease;
+    }
+
+    .login {
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 500px;
+      height: 90vh;
+      overflow-y: auto;
+      margin: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--text);
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+      color: var(--label);
+    }
+
+    .form-control, select, input[type=number] {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 20px;
+      font-size: 15px;
+      background-color: var(--input-bg);
+      color: var(--text);
+      transition: 0.3s;
+    }
+
+    .form-control:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 5px rgba(52, 152, 219, 0.4);
+      outline: none;
+    }
+
+    .btn {
+      width: 100%;
+      background-color: var(--accent);
+      color: white;
+      border: none;
+      padding: 14px;
+      font-size: 16px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      background-color: #2980b9;
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--result);
+      margin-top: 25px;
+    }
+
+    /* Toggle Switch */
+    .toggle-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 30px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--accent);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    @media screen and (max-width: 600px) {
+      .login {
+        padding: 20px;
+        margin: 10px;
+        height: 90vh;
+      }
+
+      h1 {
+        font-size: 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toggle-container">
+    <label class="switch">
+      <input type="checkbox" id="darkToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="login">
+    <h1>Student Exam Performance Indicator</h1>
+    <form action="{{ url_for('predict_datapoint')}}" method="post">
+      <label>Gender</label>
+      <select class="form-control" name="gender" required>
+        <option selected disabled value="">Select Gender</option>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+
+      <label>Race or Ethnicity</label>
+      <select class="form-control" name="ethnicity" required>
+        <option selected disabled value="">Select Ethnicity</option>
+        <option value="group A">Group A</option>
+        <option value="group B">Group B</option>
+        <option value="group C">Group C</option>
+        <option value="group D">Group D</option>
+        <option value="group E">Group E</option>
+      </select>
+
+      <label>Parental Level of Education</label>
+      <select class="form-control" name="parental_level_of_education" required>
+        <option selected disabled value="">Select Education Level</option>
+        <option value="associate's degree">Associate's Degree</option>
+        <option value="bachelor's degree">Bachelor's Degree</option>
+        <option value="high school">High School</option>
+        <option value="master's degree">Master's Degree</option>
+        <option value="some college">Some College</option>
+        <option value="some high school">Some High School</option>
+      </select>
+
+      <label>Lunch Type</label>
+      <select class="form-control" name="lunch" required>
+        <option selected disabled value="">Select Lunch Type</option>
+        <option value="free/reduced">Free/Reduced</option>
+        <option value="standard">Standard</option>
+      </select>
+
+      <label>Test Preparation Course</label>
+      <select class="form-control" name="test_preparation_course" required>
+        <option selected disabled value="">Select Test Course</option>
+        <option value="none">None</option>
+        <option value="completed">Completed</option>
+      </select>
+
+      <label>Reading Score (0–100)</label>
+      <input class="form-control" type="number" name="reading_score" min="0" max="100" placeholder="Enter Reading Score" required>
+
+      <label>Writing Score (0–100)</label>
+      <input class="form-control" type="number" name="writing_score" min="0" max="100" placeholder="Enter Writing Score" required>
+
+      <input class="btn" type="submit" value="Predict your Maths Score">
+    </form>
+
+    <h2>The prediction is {{ results }}</h2>
+  </div>
+
+  <script>
+    const toggle = document.getElementById('darkToggle');
+    const body = document.body;
+
+    if (localStorage.getItem('mode') === 'dark') {
+      body.classList.add('dark');
+      toggle.checked = true;
+    }
+
+    toggle.addEventListener('change', () => {
+      body.classList.toggle('dark');
+      localStorage.setItem('mode', body.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

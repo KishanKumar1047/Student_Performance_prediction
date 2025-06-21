@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Performance Predictor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 0.2em;
+            position: relative;
+            z-index: 2;
+        }
+
+        h3 {
+            font-weight: normal;
+            font-size: 1.5rem;
+            margin-bottom: 2em;
+            color: #cccccc;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1rem;
+            border: none;
+            background-color: #00c9ff;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .btn:hover {
+            background-color: #005f73;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            color: #888;
+            z-index: 2;
+        }
+
+        /* Floating ML tools and formulas */
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .floating-item {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 1.2rem;
+            user-select: none;
+            animation: float 15s infinite linear;
+            pointer-events: none;
+            will-change: transform, opacity;
+        }
+
+        /* Positioning and varied animation durations for floating items */
+        .floating-item:nth-child(1) { top: 5%; left: 2%; animation-duration: 18s; }
+        .floating-item:nth-child(2) { top: 10%; left: 8%; animation-duration: 22s; }
+        .floating-item:nth-child(3) { top: 15%; left: 12%; animation-duration: 16s; }
+        .floating-item:nth-child(4) { top: 20%; left: 18%; animation-duration: 20s; }
+        .floating-item:nth-child(5) { top: 25%; left: 22%; animation-duration: 24s; }
+        .floating-item:nth-child(6) { top: 30%; left: 28%; animation-duration: 17s; }
+        .floating-item:nth-child(7) { top: 35%; left: 32%; animation-duration: 21s; }
+        .floating-item:nth-child(8) { top: 40%; left: 38%; animation-duration: 19s; }
+        .floating-item:nth-child(9) { top: 45%; left: 42%; animation-duration: 23s; }
+        .floating-item:nth-child(10) { top: 50%; left: 48%; animation-duration: 15s; }
+        .floating-item:nth-child(11) { top: 55%; left: 52%; animation-duration: 20s; }
+        .floating-item:nth-child(12) { top: 60%; left: 58%; animation-duration: 18s; }
+        .floating-item:nth-child(13) { top: 65%; left: 62%; animation-duration: 22s; }
+        .floating-item:nth-child(14) { top: 70%; left: 68%; animation-duration: 16s; }
+        .floating-item:nth-child(15) { top: 75%; left: 72%; animation-duration: 24s; }
+        .floating-item:nth-child(16) { top: 80%; left: 78%; animation-duration: 17s; }
+        .floating-item:nth-child(17) { top: 85%; left: 82%; animation-duration: 21s; }
+        .floating-item:nth-child(18) { top: 90%; left: 88%; animation-duration: 19s; }
+        .floating-item:nth-child(19) { top: 10%; left: 92%; animation-duration: 23s; }
+        .floating-item:nth-child(20) { top: 15%; left: 5%; animation-duration: 15s; }
+        .floating-item:nth-child(21) { top: 20%; left: 15%; animation-duration: 20s; }
+        .floating-item:nth-child(22) { top: 25%; left: 25%; animation-duration: 18s; }
+        .floating-item:nth-child(23) { top: 30%; left: 35%; animation-duration: 22s; }
+        .floating-item:nth-child(24) { top: 35%; left: 45%; animation-duration: 16s; }
+        .floating-item:nth-child(25) { top: 40%; left: 55%; animation-duration: 24s; }
+        .floating-item:nth-child(26) { top: 45%; left: 65%; animation-duration: 17s; }
+        .floating-item:nth-child(27) { top: 50%; left: 75%; animation-duration: 21s; }
+        .floating-item:nth-child(28) { top: 55%; left: 85%; animation unpopular-duration: 19s; }
+        .floating-item:nth-child(29) { top: 60%; left: 90%; animation-duration: 23s; }
+        .floating-item:nth-child(30) { top: 65%; left: 95%; animation-duration: 15s; }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0.2;
+            }
+            50% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0.2;
+            }
+        }
+
+        /* Dropping emojis */
+        .dropping-emoji {
+            position: absolute;
+            font-size: 1.5rem;
+            user-select: none;
+            animation: drop 8s infinite linear;
+            pointer-events: none;
+            will-change: transform;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Positioning and varied animation durations for dropping emojis */
+        .dropping-emoji:nth-child(31) { left: 5%; animation-duration: 7s; animation-delay: 0s; }
+        .dropping-emoji:nth-child(32) { left: 15%; animation-duration: 9s; animation-delay: 1s; }
+        .dropping-emoji:nth-child(33) { left: 25%; animation-duration: 6s; animation-delay: 2s; }
+        .dropping-emoji:nth-child(34) { left: 35%; animation-duration: 8s; animation-delay: 0.5s; }
+        .dropping-emoji:nth-child(35) { left: 45%; animation-duration: 7.5s; animation-delay: 1.5s; }
+        .dropping-emoji:nth-child(36) { left: 55%; animation-duration: 8.5s; animation-delay: 2.5s; }
+        .dropping-emoji:nth-child(37) { left: 65%; animation-duration: 6.5s; animation-delay: 0.8s; }
+        .dropping-emoji:nth-child(38) { left: 75%; animation-duration: 9.5s; animation-delay: 1.8s; }
+        .dropping-emoji:nth-child(39) { left: 85%; animation-duration: 7.8s; animation-delay: 2.2s; }
+        .dropping-emoji:nth-child(40) { left: 95%; animation-duration: 8.2s; animation-delay: 1.2s; }
+
+        @keyframes drop {
+            0% {
+                transform: translateY(-10vh);
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(110vh);
+                opacity: 0.1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="floating-item">📊</div>
+        <div class="floating-item">f(x) = mx + b</div>
+        <div class="floating-item">🤖</div>
+        <div class="floating-item">∑(x - μ)²</div>
+        <div class="floating-item">📈</div>
+        <div class="floating-item">y = ax² + bx + c</div>
+        <div class="floating-item">🔢</div>
+        <div class="floating-item">σ² = Var(X)</div>
+        <div class="floating-item">🧠</div>
+        <div class="floating-item">P(A|B) = P(B|A)P(A)/P(B)</div>
+        <div class="floating-item">🔍</div>
+        <div class="floating-item">E(X) = μ</div>
+        <div class="floating-item">⚙️</div>
+        <div class="floating-item">∫ f(x) dx</div>
+        <div class="floating-item"> Phenotype📉</div>
+        <div class="floating-item">W = Xβ + ε</div>
+        <div class="floating-item">💻</div>
+        <div class="floating-item">∇f(x, y)</div>
+        <div class="floating-item">🛠️</div>
+        <div class="floating-item">R² = 1 - SSres/SStot</div>
+        <div class="floating-item">📚</div>
+        <div class="floating-item">α + β = γ</div>
+        <div class="floating-item">🔧</div>
+        <div class="floating-item">log(x) = ln(x)/ln(10)</div>
+        <div class="floating-item">📖</div>
+        <div class="floating-item">θ = arg min L(θ)</div>
+        <div class="floating-item">⚡️</div>
+        <div class="floating-item">Cov(X, Y)</div>
+        <div class="floating-item">🖥️</div>
+        <div class="floating-item">d/dx (e^x) = e^x</div>
+        <div class="dropping-emoji">📚</div>
+        <div class="dropping-emoji">📈</div>
+        <div class="dropping-emoji">🧠</div>
+        <div class="dropping-emoji">⚡️</div>
+        <div class="dropping-emoji">🔍</div>
+        <div class="dropping-emoji">🤖</div>
+        <div class="dropping-emoji">📊</div>
+        <div class="dropping-emoji">💻</div>
+        <div class="dropping-emoji">🔢</div>
+        <div class="dropping-emoji">🛠️</div>
+    </div>
+    <h1>Welcome to the Future of Education</h1>
+    <h3>🔍 Predict student performance and unlock success through the power of Machine Learning.</h3>
+    <a href="/predictdata"><button class="btn">Start Prediction</button></a>
+
+    <div class="footer">
+        <p>Made with ❤️ by Kishan | Powered by Flask & Sklearn</p>
+    </div>
+</body>
+</html>
